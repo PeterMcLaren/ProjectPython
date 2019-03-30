@@ -13,9 +13,9 @@ def displaygrid(grid):
 
 def creategrid(x,y,colour,solid):
     grid=[]
-    for i in range(x):
+    for _ in range(x):
         x=[]
-        for j in range(y):
+        for _ in range(y):
             x.append(Block(colour,solid))
         grid.append(x)
     return grid
