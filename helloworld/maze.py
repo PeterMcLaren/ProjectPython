@@ -1,4 +1,4 @@
-class Block:
+class block:
     #Class Attribute
     def __init__(self, colour, solid):
         self.colour=colour
@@ -9,6 +9,8 @@ def displaygrid(grid):
         for j in range(0,len(grid[i])):
             if grid[i][j].solid:
                 print("X",end="")
+            else:
+                print(" ",end="")
         print("")
 
 def creategrid(x,y,colour,solid):
@@ -16,10 +18,11 @@ def creategrid(x,y,colour,solid):
     for _ in range(x):
         x=[]
         for _ in range(y):
-            x.append(Block(colour,solid))
+            x.append(block(colour,solid))
         grid.append(x)
     return grid
 
 mazesize=20
 maze=creategrid(mazesize,mazesize,"black",True)
+maze[1][1].solid=False
 displaygrid(maze)
