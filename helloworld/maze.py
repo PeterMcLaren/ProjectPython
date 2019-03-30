@@ -11,13 +11,15 @@ def displaygrid(grid):
                 print("X",end="")
         print("")
 
-maze=[]
-gridsize=20
- 
-for i in range(gridsize):
-    x=[]
-    for j in range(gridsize):
-        x.append(Block("black",True))
-    maze.append(x)
+def creategrid(x,y,colour,solid):
+    grid=[]
+    for i in range(x):
+        x=[]
+        for j in range(y):
+            x.append(Block(colour,solid))
+        grid.append(x)
+    return grid
 
+mazesize=20
+maze=creategrid(mazesize,mazesize,"black",True)
 displaygrid(maze)
