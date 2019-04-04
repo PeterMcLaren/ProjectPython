@@ -11,13 +11,12 @@ class block:
 
 def displaygrid(grid):
     for i in range(0,len(grid)):
-        for _ in range(2):
-            for j in range(0,len(grid[i])):
-                if grid[i][j].solid:
-                    print("XXXX",end="")
-                else:
-                    print("    ",end="")
-            print("")
+        for j in range(0,len(grid[i])):
+            if grid[i][j].solid:
+               print("@@",end="")
+            else:
+               print("  ",end="")
+        print("")
 
 def creategrid(x,y,colour,solid):
     grid=[]
@@ -46,7 +45,6 @@ def checkifsolid(x,y,grid):
             return grid[x][y].solid
     return False
 
-
-maze=creategrid(21,41,"black",True)
+maze=creategrid(43,83,"black",True)
 gofromhere(1,1,maze)
 displaygrid(maze)
