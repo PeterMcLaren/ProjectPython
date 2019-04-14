@@ -1,4 +1,5 @@
 import random
+from graphics import *
 
 #use tuple because immutable so faster
 direction=((1,0),(-1,0),(0,-1),(0,1))
@@ -17,6 +18,18 @@ def displaygrid(grid):
             else:
                print("  ",end="")
         print("")
+
+def displaygraphicalgrid(win,grid,scale):
+    for i in range(0,len(grid)):
+        for j in range(0,len(grid[i])):
+            Rect=Rectangle(Point(i*scale,j*scale),Point((i+1)*scale-1,(j+1)*scale-1))
+            if grid[i][j].solid:
+                Rect.setFill("white")
+                Rect.setOutline("white")
+            else:
+                Rect.setFill("black")
+                Rect.setOutline("black")
+            Rect.draw(win)
 
 def creategrid(x,y,colour,solid):
     grid=[]
@@ -45,6 +58,13 @@ def checkifsolid(x,y,grid):
             return grid[x][y].solid
     return False
 
-maze=creategrid(43,83,"black",True)
+x=75
+y=75
+scale=10
+win=GraphWin("Maze",x*scale,y*scale)
+
+maze=creategrid(x,y,"black",True)
 gofromhere(1,1,maze)
-displaygrid(maze)
+
+displaygraphicalgrid(win,maze,scale)
+win.getMouse()
