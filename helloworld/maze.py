@@ -1,5 +1,5 @@
 import random
-from graphics import *
+from graphics import GraphWin,Rectangle,Point
 
 #use tuple because immutable so faster
 direction=((1,0),(-1,0),(0,-1),(0,1))
