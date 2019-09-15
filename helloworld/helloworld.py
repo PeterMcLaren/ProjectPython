@@ -20,4 +20,3 @@ def get_biggest_number(*args):
     return max(args)
 
 print("the oldest dog is {}".format(get_biggest_number(a.age,b.age,c.age,c.age,c.age)))
-test["section1"]={""}
