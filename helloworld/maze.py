@@ -41,16 +41,22 @@ def creategrid(x,y,colour,solid):
     return grid
 
 def gofromhere(x,y,grid):
-    tried=[False]*4
     grid[x][y].solid=False
-    while False in tried:
-        d=random.randrange(4)
-        tried[d]=True
-        dx=direction[d][0]
-        dy=direction[d][1]
-        if checkifsolid(x+dx*2,y+dy*2,grid):
-            grid[x+dx][y+dy].solid=False
-            gofromhere(x+dx*2,y+dy*2,grid)
+    stack=[[x,y]]
+    while len(stack):
+        nextelement=stack.pop()
+        lx=nextelement[0]
+        ly=nextelement[1]
+        tried=[False]*4
+        while False in tried:
+            d=random.randrange(4)
+            tried[d]=True
+            dx=direction[d][0]
+            dy=direction[d][1]
+            if checkifsolid(lx+dx*2,ly+dy*2,grid):
+                grid[lx+dx][ly+dy].solid=False
+                grid[lx+dx*2][ly+dy*2].solid=False
+                stack.append([lx+dx*2,ly+dy*2])
 
 def checkifsolid(x,y,grid):
     if x>0 and x<len(grid):
@@ -58,9 +64,9 @@ def checkifsolid(x,y,grid):
             return grid[x][y].solid
     return False
 
-x=75
-y=75
-scale=10
+x=81
+y=81
+scale=8
 win=GraphWin("Maze",x*scale,y*scale)
 
 maze=creategrid(x,y,"black",True)
