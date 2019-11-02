@@ -50,13 +50,17 @@ def gofromhere(x,y,grid):
         tried=[False]*4
         while False in tried:
             d=random.randrange(4)
-            tried[d]=True
-            dx=direction[d][0]
-            dy=direction[d][1]
-            if checkifsolid(lx+dx*2,ly+dy*2,grid):
-                grid[lx+dx][ly+dy].solid=False
-                grid[lx+dx*2][ly+dy*2].solid=False
-                stack.append([lx+dx*2,ly+dy*2])
+            if not tried[d]:
+                tried[d]=True
+                dx=direction[d][0]
+                dy=direction[d][1]
+                if checkifsolid(lx+dx*2,ly+dy*2,grid):
+                    grid[lx+dx][ly+dy].solid=False
+                    grid[lx+dx*2][ly+dy*2].solid=False
+                    stack.append([lx,ly])
+                    lx=lx+dx*2
+                    ly=ly+dy*2
+                    tried=[False]*4
 
 def checkifsolid(x,y,grid):
     if x>0 and x<len(grid):
