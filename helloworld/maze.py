@@ -3,6 +3,7 @@ from graphics import GraphWin,Rectangle,Point
 
 #use tuple because immutable so faster
 direction=((1,0),(-1,0),(0,-1),(0,1))
+fromhere=(1,0,3,2)
 
 class block:
     #Class Attribute
@@ -61,6 +62,7 @@ def gofromhere(x,y,grid):
                     lx=lx+dx*2
                     ly=ly+dy*2
                     tried=[False]*4
+                    tried[fromhere[d]]=True
 
 def checkifsolid(x,y,grid):
     if x>0 and x<len(grid):
@@ -68,9 +70,9 @@ def checkifsolid(x,y,grid):
             return grid[x][y].solid
     return False
 
-x=81
-y=81
-scale=8
+x=39
+y=39
+scale=10
 win=GraphWin("Maze",x*scale,y*scale)
 
 maze=creategrid(x,y,"black",True)
