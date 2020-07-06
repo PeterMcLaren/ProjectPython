@@ -1,7 +1,7 @@
 import random
 from graphics import GraphWin,Rectangle,Point
 
-#use tuple because immutable so faster
+#use tuple because immutable so faster  blah
 direction=((1,0),(-1,0),(0,-1),(0,1))
 fromhere=(1,0,3,2)
 
