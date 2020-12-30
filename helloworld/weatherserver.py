@@ -1,10 +1,6 @@
 import flask
 from flask import request
-
 import mysql.connector
-
-app = flask.Flask(__name__)
-app.config["DEBUG"] = True
 
 # Weather station setup:
 #   EasyweatherV1.5.6
@@ -32,8 +28,56 @@ app.config["DEBUG"] = True
 #       flush privileges;
 
 SQLHost="192.168.1.225" # 127.0.0.1 in production
-SQLUser="weatherserver"
-SQLPass="weatherpass"
+SQLUser="weatherserver" # change in production
+SQLPass="weatherpass" # change in production
+
+SQLCreate=("create table weathertable ("
+    "id INT AUTO_INCREMENT PRIMARY KEY, "
+    "indoortemp DECIMAL(6,3), "
+    "outdoortemp DECIMAL(6,3), "
+    "dewpoint DECIMAL(6,3), "
+    "windchill DECIMAL(6,3), "
+    "indoorhumidity DECIMAL(6,3), "
+    "outdoorhumidity DECIMAL(6,3), "
+    "windspeedmph DECIMAL(6,3), "
+    "windgustmph DECIMAL(6,3), "
+    "winddir DECIMAL(6,3), "
+    "absbarom DECIMAL(7,3), "
+    "barom DECIMAL(7,3), "
+    "rainmm DECIMAL(6,3), " 
+    "dailyrainmm DECIMAL(6,3), "
+    "weeklyrainmm DECIMAL(6,3), "
+    "monthlyrainmm DECIMAL(6,3), "
+    "solarradiation DECIMAL(6,3), "
+    "UV DECIMAL(6,3), "
+    "dateutc DATETIME)"
+    )
+
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
+
+mydb = mysql.connector.connect(
+  host=SQLHost,
+  user=SQLUser,
+  password=SQLPass
+)
+
+def SetupDb(dbconn):
+    dbcursor=dbconn.cursor()
+    print("Trying to create database")
+    try:
+        dbcursor.execute("create database weatherdata")
+    except Exception as e:
+        print("Db Create: ", e)
+    else:
+        print("Weatherdata database created successfully")
+    try:
+        dbcursor.execute("use weatherdata")
+        dbcursor.execute(SQLCreate)
+    except Exception as e:
+        print("Table Create: ", e)
+    else:
+        print("Weathertable table created successfully")
 
 @app.route('/myweatherdata/', methods=['GET'])
 def weatherdata():
@@ -42,12 +86,5 @@ def weatherdata():
         print(f'arg: {i} value: {request.args[i]}')
     return 'ok'
 
-mydb = mysql.connector.connect(
-  host=SQLHost,
-  user=SQLUser,
-  password=SQLPass
-)
-
-print(mydb)
-
+SetupDb(mydb)
 app.run(host='0.0.0.0')
