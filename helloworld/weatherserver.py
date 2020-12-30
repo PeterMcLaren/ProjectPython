@@ -41,4 +41,4 @@ mydb = mysql.connector.connect(
 
 print(mydb)
 
-# app.run(host='0.0.0.0')
+app.run(host='0.0.0.0')
