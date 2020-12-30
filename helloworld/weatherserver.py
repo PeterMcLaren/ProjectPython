@@ -34,7 +34,7 @@ def weatherdata():
     return 'ok'
 
 mydb = mysql.connector.connect(
-  host="192.168.1.225",
+  host="0.0.0.0",
   user="yourusername",
   password="yourpassword"
 )
