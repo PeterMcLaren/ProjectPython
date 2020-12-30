@@ -24,7 +24,10 @@ app.config["DEBUG"] = True
 #       Disallow root login remotely
 #       Remove test database
 #       Reload privileges
-#   
+#   sudo vi /etc/mysql/mariadb.conf.d/50-server.cnf
+#       Comment out bind-address 127.0.0.1 line to allow remote access to MySQL for debug
+#   sudo mysql -u root -p
+
 
 @app.route('/myweatherdata/', methods=['GET'])
 def weatherdata():
@@ -34,9 +37,9 @@ def weatherdata():
     return 'ok'
 
 mydb = mysql.connector.connect(
-  host="0.0.0.0",
-  user="yourusername",
-  password="yourpassword"
+  host="192.168.1.225",
+  user="weatherserver",
+  password="weatherpass"
 )
 
 print(mydb)
