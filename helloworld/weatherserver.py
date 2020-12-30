@@ -27,7 +27,7 @@ app.config["DEBUG"] = True
 #   sudo vi /etc/mysql/mariadb.conf.d/50-server.cnf
 #       Comment out bind-address 127.0.0.1 line to allow remote access to MySQL for debug
 #   sudo mysql -u root -p
-
+#       CREATE USER 'weatherserver'@'%' IDENTIFIED BY 'weatherpass' ;
 
 @app.route('/myweatherdata/', methods=['GET'])
 def weatherdata():
