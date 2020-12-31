@@ -65,7 +65,7 @@ SQLInsertCols= [
 
 # Initialize Flask
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
 # Get connection to database
 mydb = mysql.connector.connect(
@@ -106,10 +106,7 @@ def pluckfromdict(d,l):
 
 @app.route('/myweatherdata/', methods=['GET'])
 def weatherdata():
-    #print(request.args)
-    #for i in request.args:
-    #   print(f'arg: {i} value: {request.args[i]}')
-
+  
     dicttoinsert=pluckfromdict(request.args,SQLInsertCols)
     placeholders = ", ".join(["%s"] * len(dicttoinsert))
     columns = ", ".join(dicttoinsert.keys())
@@ -123,12 +120,10 @@ def weatherdata():
         password=SQLPass
     )
     dbcursor=mydb.cursor()
-    
-    print(sql)
-
-    print(list(dicttoinsert.values()))
     dbcursor.execute("use weatherdata")
+    #execute the insert statement, passing in the values
     dbcursor.execute(sql,list(dicttoinsert.values()))
+    #no changes without the commit
     mydb.commit()
     print(f"{dbcursor.rowcount} rows inserted")
 
