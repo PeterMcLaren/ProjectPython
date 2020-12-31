@@ -130,6 +130,5 @@ def weatherdata():
     mydb.close()
     return 'ok'
 
-
 SetupDb()
 app.run(host='0.0.0.0')
