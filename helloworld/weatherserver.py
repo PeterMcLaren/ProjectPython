@@ -25,6 +25,8 @@ import mysql.connector
 #   sudo mysql -u root -p
 #       CREATE USER 'weatherserver'@'%' IDENTIFIED BY 'weatherpass';
 #       GRANT ALL ON *.* TO 'weatherserver'@'%';
+#       CREATE USER 'reportreader'@'%'  IDENTIFIED BY 'readerpass';
+#       GRANT SELECT ON *.* TO 'reportreader'@'%';
 #       flush privileges;
 
 # Address of MySQL server
