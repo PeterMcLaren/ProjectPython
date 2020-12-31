@@ -1,0 +1,14 @@
+[Unit]
+Description=My Weather Server
+After=multi-user.target
+
+[Service]
+Type=idle
+WorkingDirectory=/home/pi/WeatherServer/ProjectPython/helloworld/
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/WeatherServer/ProjectPython/helloworld/weatherserver.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
