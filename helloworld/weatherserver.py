@@ -121,12 +121,16 @@ def weatherdata():
     )
     dbcursor=mydb.cursor()
     dbcursor.execute("use weatherdata")
-    #execute the insert statement, passing in the values
+    
+    # Execute the insert statement, passing in the values
     dbcursor.execute(sql,list(dicttoinsert.values()))
-    #no changes without the commit
+    
+    # No changes without the commit
     mydb.commit()
-    print(f"{dbcursor.rowcount} rows inserted")
 
+    # Debug print - prints before the corresponding flask http debug output.
+    print(f"{dbcursor.rowcount} rows inserted")
+    # Close Db Conneciton each time
     mydb.close()
     return 'ok'
 
