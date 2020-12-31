@@ -27,44 +27,66 @@ import mysql.connector
 #       GRANT ALL ON *.* TO 'weatherserver'@'%';
 #       flush privileges;
 
+# Address of MySQL server
 SQLHost="192.168.1.225" # 127.0.0.1 in production
+# Credentials to connect to MySQL
 SQLUser="weatherserver" # change in production
 SQLPass="weatherpass" # change in production
 
+# String to create weather table - single line string
+# (bracket notation is just way of representing long string as multiline in source code)
 SQLCreate=("create table weathertable ("
     "id INT AUTO_INCREMENT PRIMARY KEY, "
-    "indoortemp DECIMAL(3,1), "
-    "outdoortemp DECIMAL(3,1), "
-    "dewpoint DECIMAL(3,1), "
-    "windchill DECIMAL(3,1), "
+    "indoortempf DECIMAL(3,1), "
+    "tempf DECIMAL(3,1), "
+    "dewptf DECIMAL(3,1), "
+    "windchillf DECIMAL(3,1), "
     "indoorhumidity DECIMAL(2,0), "
-    "outdoorhumidity DECIMAL(2,0), "
+    "humidity DECIMAL(2,0), "
     "windspeedmph DECIMAL(2,1), "
     "windgustmph DECIMAL(2,1), "
     "winddir DECIMAL(3,0), "
-    "absbarom DECIMAL(5,1), "
-    "barom DECIMAL(5,1), "
-    "rainmm DECIMAL(6,3), " 
-    "dailyrainmm DECIMAL(6,3), "
-    "weeklyrainmm DECIMAL(6,3), "
-    "monthlyrainmm DECIMAL(6,3), "
+    "absbaromin DECIMAL(5,1), "
+    "baromin DECIMAL(5,1), "
+    "rainin DECIMAL(6,3), " 
+    "dailyrainin DECIMAL(6,3), "
+    "weeklyrainin DECIMAL(6,3), "
+    "monthlyrainin DECIMAL(6,3), "
     "solarradiation DECIMAL(5,2), "
     "UV DECIMAL(1,0), "
     "dateutc DATETIME)"
     )
 
+# List of columns to insert each time
+SQLInsertCols= [
+    "indoortempf", "tempf", "dewptf", "windchillf",
+    "indoorhumidity", "humidity", 
+    "windspeedmph", "windgustmph", "winddir",
+    "absbaromin", "baromin",
+    "rainin", "dailyrainin", "weeklyrainin", "monthlyrainin",
+    "solarradiation", "UV",
+    "dateutc"
+]
+
+# Initialize Flask
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
+# Get connection to database
 mydb = mysql.connector.connect(
   host=SQLHost,
   user=SQLUser,
   password=SQLPass
 )
 
-def SetupDb(dbconn):
-    dbcursor=dbconn.cursor()
-    print("Trying to create database")
+def SetupDb():
+    mydb = mysql.connector.connect(
+        host=SQLHost,
+        user=SQLUser,
+        password=SQLPass
+    )
+    dbcursor=mydb.cursor()
+    print("Trying to create database and table:")
     try:
         dbcursor.execute("create database weatherdata")
     except Exception as e:
@@ -78,13 +100,46 @@ def SetupDb(dbconn):
         print("Table Create: ", e)
     else:
         print("Weathertable table created successfully")
+    print("closing db connection")
+    mydb.close()
+
+def pluckfromdict(d,l):
+    newd={}
+    for i in l:
+        newd[i]=d[i]
+    return newd
 
 @app.route('/myweatherdata/', methods=['GET'])
 def weatherdata():
-    print(request.args)
-    for i in request.args:
-        print(f'arg: {i} value: {request.args[i]}')
+    #print(request.args)
+    #for i in request.args:
+    #   print(f'arg: {i} value: {request.args[i]}')
+
+    dicttoinsert=pluckfromdict(request.args,SQLInsertCols)
+    placeholders = ", ".join(["%s"] * len(dicttoinsert))
+    columns = ", ".join(dicttoinsert.keys())
+
+    sql = f"INSERT INTO weathertable ({columns}) VALUES ({placeholders})" 
+ 
+    # We're ready so connect to database
+    mydb = mysql.connector.connect(
+        host=SQLHost,
+        user=SQLUser,
+        password=SQLPass
+    )
+    dbcursor=mydb.cursor()
+    
+    print(sql)
+
+    print(list(dicttoinsert.values()))
+    dbcursor.execute("use weatherdata")
+    dbcursor.execute(sql,list(dicttoinsert.values()))
+    mydb.commit()
+    print(f"{dbcursor.rowcount} rows inserted")
+
+    mydb.close()
     return 'ok'
 
-SetupDb(mydb)
+
+SetupDb()
 app.run(host='0.0.0.0')
