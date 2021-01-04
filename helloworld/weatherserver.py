@@ -1,6 +1,7 @@
 import flask
 from flask import request
 import mysql.connector
+import logging
 
 # Weather station setup:
 #   EasyweatherV1.5.6
@@ -69,6 +70,10 @@ SQLInsertCols= [
 app = flask.Flask(__name__)
 app.config["DEBUG"] = False
 
+# Suppress connection logs
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 # Get connection to database
 mydb = mysql.connector.connect(
   host=SQLHost,
@@ -131,7 +136,7 @@ def weatherdata():
     mydb.commit()
 
     # Debug print - prints before the corresponding flask http debug output.
-    print(f"{dbcursor.rowcount} rows inserted")
+    # print(f"{dbcursor.rowcount} rows inserted")
     # Close Db Conneciton each time
     mydb.close()
     return 'ok'
