@@ -31,7 +31,7 @@ import logging
 #       flush privileges;
 
 # Address of MySQL server
-SQLHost="192.168.1.225" # 127.0.0.1 in production
+SQLHost="192.168.1.224" # 127.0.0.1 in production
 # Credentials to connect to MySQL
 SQLUser="weatherserver" # change in production
 SQLPass="weatherpass" # change in production
