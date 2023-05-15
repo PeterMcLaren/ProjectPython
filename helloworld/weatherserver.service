@@ -8,6 +8,7 @@ WorkingDirectory=/home/pi/WeatherServer/ProjectPython/helloworld/
 User=pi
 ExecStart=/usr/bin/python3 /home/pi/WeatherServer/ProjectPython/helloworld/weatherserver.py
 Restart=always
+TimeoutStartSec=10
 
 [Install]
 WantedBy=multi-user.target
