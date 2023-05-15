@@ -40,7 +40,7 @@ SQLPass="weatherpass" # change in production
 # (bracket notation is just way of representing long string as multiline in source code)
 SQLCreate=("create table weathertable ("
     "id INT AUTO_INCREMENT PRIMARY KEY, "
-    "indoortempf DECIMAL(3,1), tempf DECIMAL(3,1), dewptf DECIMAL(3,1), windchillf DECIMAL(3,1), "
+    "indoortempf DECIMAL(4,1), tempf DECIMAL(4,1), dewptf DECIMAL(4,1), windchillf DECIMAL(4,1), "
     "indoorhumidity DECIMAL(2,0), humidity DECIMAL(2,0), "
     "windspeedmph DECIMAL(3,1), windgustmph DECIMAL(3,1), winddir DECIMAL(3,0), "
     "absbaromin DECIMAL(5,3), baromin DECIMAL(5,3), "
