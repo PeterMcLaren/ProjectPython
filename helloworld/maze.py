@@ -70,9 +70,9 @@ def checkifsolid(x,y,grid):
             return grid[x][y].solid
     return False
 
-x=49
-y=49
-scale=10
+x=69
+y=69
+scale=7
 win=GraphWin("Maze",x*scale,y*scale)
 
 maze=creategrid(x,y,"black",True)
